@@ -442,12 +442,12 @@ class FormatEpochTimeInMillisAsIso8601Test : public Test {
     // tzset() distinguishes between the TZ variable being present and empty
     // and not being present, so we have to consider the case of time_zone
     // being NULL.
-#if _MSC_VER || GTEST_OS_WINDOWS_MINGW
+#if _MSC_VER || GTEST_OS_WINDOWS_MINGW || defined(_Windows)
     // ...Unless it's MSVC, whose standard library's _putenv doesn't
     // distinguish between an empty and a missing variable.
     const std::string env_var =
         std::string("TZ=") + (time_zone ? time_zone : "");
-    _putenv(env_var.c_str());
+	putenv(env_var.c_str());
     GTEST_DISABLE_MSC_WARNINGS_PUSH_(4996 /* deprecated function */)
     tzset();
     GTEST_DISABLE_MSC_WARNINGS_POP_()
